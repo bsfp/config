@@ -18,6 +18,17 @@ Work with one level of folder and Yaml and Json files.
 
 ## Demo
 
+
+> config/hello.json
+
+```json
+
+{
+  "what": "world"
+}
+
+```
+
 > index.php
 
 ```php
@@ -27,16 +38,6 @@ Work with one level of folder and Yaml and Json files.
 new \BSFP\C(__DIR__ . '/config');
 
 echo 'Hello ' . \BSFP\C::get('hello')->get('what');
-
-```
-
-> config/hello.json
-
-```json
-
-{
-  "what": "world"
-}
 
 ```
 
