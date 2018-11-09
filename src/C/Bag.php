@@ -27,6 +27,18 @@ class Bag implements IteratorAggregate
   }
 
   /**
+   * Get object parameter
+   *
+   * @param $key String
+   * @param $default mixed
+   * @return mixed
+   */
+  public function __get($key)
+  {
+    return $this->properties[$key] ?? null;
+  }
+
+  /**
    * Has object parameter
    *
    * @param $key String
