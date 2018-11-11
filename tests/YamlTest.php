@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 final class YamlTest extends TestCase
 {
 
-  public function testLoadingDataInYMLFile(): void
+  public function testLoadingDataInYAMLFile(): void
   {
     $cnf = new \BSFP\C(__DIR__ . '/data/yaml/');
     $this->assertEquals($cnf->hello->what, 'world');

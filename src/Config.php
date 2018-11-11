@@ -19,12 +19,27 @@ class Config
     $this->path = $path;
     $this->config = [];
 
-    $this->load('json', '\BSFP\Config::readJsonFile');
-    $this->load('yml', '\BSFP\Config::readYamlFile');
-    $this->load('yaml', '\BSFP\Config::readYamlFile');
-    $this->load('php', '\BSFP\Config::readPhpFile');
+    if ($ext !== null) {
+      switch ($ext) {
+        case 'json':
+          $this->load('json', '\BSFP\Config::readJsonFile');
+          break;
+        case 'php':
+          $this->load('php', '\BSFP\Config::readPhpFile');
+          break;
+        case 'yml':
+        case 'yaml':
+          $this->load($ext, '\BSFP\Config::readYamlFile');
+          break;
+      }
+    } else {
+      $this->load('json', '\BSFP\Config::readJsonFile');
+      $this->load('yml', '\BSFP\Config::readYamlFile');
+      $this->load('yaml', '\BSFP\Config::readYamlFile');
+      $this->load('php', '\BSFP\Config::readPhpFile');
+    }
     
-    $this->config = new C\Bag($this->config);
+    $this->config = new I\Bag($this->config);
   }
 
   public static function build(string $path, ?string $ext = null): void
@@ -42,7 +57,7 @@ class Config
    * @param mixed $default
    * @return C\Bag
    */
-  public static function get(string $key, $default = null): ?C\Bag
+  public static function get(string $key, $default = null): ?I\Bag
   {
     if (!self::$instance) {
       throw new \Exception('BSFP config not initialized add "new \\BSFP\\C::build($path)" before using "\\BSFP\\C::get($key)"');
@@ -57,7 +72,7 @@ class Config
    * @param String $key
    * @return C\Bag
    */
-  public function __get($key): ?C\Bag
+  public function __get($key): ?I\Bag
   {
     return $this->config->get($key);
   }
@@ -118,7 +133,7 @@ class Config
     $files = glob($this->path . '*.' . $ext);
     foreach ($files as $file) {
       $data = call_user_func_array($callback, [$file]);
-      $this->config[basename($file, '.' . $ext)] = new C\Bag($data);
+      $this->config[basename($file, '.' . $ext)] = new I\Bag($data);
     }
   }
 
@@ -138,7 +153,7 @@ class Config
       foreach ($files as $file) {
         $content = array_merge($content, (array)$callback($file));
       }
-      $this->config[basename($folder)] = new C\Bag($content);
+      $this->config[basename($folder)] = new I\Bag($content);
     }
   }
 }
